@@ -26,6 +26,32 @@ public class ProdutoService
             .ToListAsync();
     }
 
+    public async Task<List<ProdutoResumoDTO>> ListarPaginado(
+    int page,
+    int pageSize,
+    string? nome)
+    {
+        var query = _context.Produtos
+            .Include(p => p.Categoria)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(nome))
+        {
+            query = query.Where(p => p.Nome.Contains(nome));
+        }
+
+        return await query
+            .OrderBy(p => p.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new ProdutoResumoDTO
+            {
+                Nome = p.Nome,
+                Categoria = p.Categoria!.Nome
+            })
+            .ToListAsync();
+    }
+
     public async Task<bool> AtualizarProduto(int id, ProdutoUpdateDTO dto)
     {
         var produto = await _context.Produtos.FindAsync(id);

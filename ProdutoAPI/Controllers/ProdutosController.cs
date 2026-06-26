@@ -107,6 +107,17 @@ public class ProdutosController : ControllerBase
         return Ok(produtos);
     }
 
+    [HttpGet("Paginado")]
+    public async Task<IActionResult> ProdutosPaginados(
+    int page = 1,
+    int pageSize = 5,
+    string? nome = null)
+    {
+        var produtos = await _produtoService.ListarPaginado(page, pageSize, nome);
+
+        return Ok(produtos);
+    }
+
     [HttpPut("{id}")]
     public async Task<IActionResult> PutProduto(int id, ProdutoUpdateDTO dto)
     {
