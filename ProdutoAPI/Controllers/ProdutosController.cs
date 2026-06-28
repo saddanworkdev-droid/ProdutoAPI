@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using ProdutoAPI.Services;
+using ProdutoAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProdutoAPI.Data;
@@ -14,9 +14,9 @@ namespace ProdutoAPI.Controllers;
 public class ProdutosController : ControllerBase
 {
     private readonly AppDbContext _context;
-    private readonly ProdutoService _produtoService;
+    private readonly IProdutoService _produtoService;
 
-    public ProdutosController(AppDbContext context, ProdutoService produtoService)
+    public ProdutosController(AppDbContext context, IProdutoService produtoService)
     {
         _context = context;
         _produtoService = produtoService;

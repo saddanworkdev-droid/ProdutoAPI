@@ -1,15 +1,16 @@
-using Microsoft.OpenApi.Models;
-using ProdutoAPI.Services;
-using Microsoft.EntityFrameworkCore;
-using ProdutoAPI.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using ProdutoAPI.Data;
+using ProdutoAPI.Interfaces;
+using ProdutoAPI.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ProdutoService>();
+builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(

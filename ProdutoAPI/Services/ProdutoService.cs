@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProdutoAPI.Data;
 using ProdutoAPI.DTOs;
+using ProdutoAPI.Interfaces;
 using ProdutoAPI.Models;
 
 namespace ProdutoAPI.Services;
 
-public class ProdutoService
+public class ProdutoService : IProdutoService
 {
     private readonly AppDbContext _context;
 
