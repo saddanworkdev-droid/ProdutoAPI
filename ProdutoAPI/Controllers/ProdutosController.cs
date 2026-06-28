@@ -111,9 +111,17 @@ public class ProdutosController : ControllerBase
     public async Task<IActionResult> ProdutosPaginados(
     int page = 1,
     int pageSize = 5,
-    string? nome = null)
+    string? nome = null,
+    string? ordenarPor = null,
+    bool desc = false)
     {
-        var produtos = await _produtoService.ListarPaginado(page, pageSize, nome);
+        var produtos = await _produtoService.ListarPaginado(
+            page,
+            pageSize,
+            nome,
+            ordenarPor,
+            desc
+        );
 
         return Ok(produtos);
     }

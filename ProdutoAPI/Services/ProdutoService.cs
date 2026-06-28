@@ -29,7 +29,9 @@ public class ProdutoService
     public async Task<List<ProdutoResumoDTO>> ListarPaginado(
     int page,
     int pageSize,
-    string? nome)
+    string? nome,
+    string? ordenarPor,
+    bool desc)
     {
         var query = _context.Produtos
             .Include(p => p.Categoria)
@@ -40,8 +42,24 @@ public class ProdutoService
             query = query.Where(p => p.Nome.Contains(nome));
         }
 
+        query = ordenarPor?.ToLower() switch
+        {
+            "nome" => desc
+                ? query.OrderByDescending(p => p.Nome)
+                : query.OrderBy(p => p.Nome),
+
+            "preco" => desc
+                ? query.OrderByDescending(p => p.Preco)
+                : query.OrderBy(p => p.Preco),
+
+            "estoque" => desc
+                ? query.OrderByDescending(p => p.Estoque)
+                : query.OrderBy(p => p.Estoque),
+
+            _ => query.OrderBy(p => p.Id)
+        };
+
         return await query
-            .OrderBy(p => p.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .Select(p => new ProdutoResumoDTO
