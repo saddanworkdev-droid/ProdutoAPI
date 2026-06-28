@@ -1,4 +1,5 @@
-﻿using ProdutoAPI.Services;
+﻿using Microsoft.AspNetCore.Authorization;
+using ProdutoAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProdutoAPI.Data;
@@ -7,6 +8,7 @@ using ProdutoAPI.DTOs;
 
 namespace ProdutoAPI.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ProdutosController : ControllerBase
