@@ -80,7 +80,7 @@ dotnet run
 **Saddan Nazik Soares Kalil**
 
 LinkedIn:
-www.linkedin.com/in/saddan-nazik
+www.linkedin.com/in/saddan-nazik-soares-kalil-8a44a1418
 
 GitHub:
 https://github.com/saddanworkdev-droid

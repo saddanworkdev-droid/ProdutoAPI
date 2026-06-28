@@ -141,6 +141,7 @@ public class ProdutosController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduto(int id)
     {

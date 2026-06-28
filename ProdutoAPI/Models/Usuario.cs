@@ -6,5 +6,7 @@ public class Usuario
 
     public string Login { get; set; } = string.Empty;
 
-    public string Senha { get; set; } = string.Empty;
+    public string SenhaHash { get; set; } = string.Empty;
+
+    public string Role { get; set; } = "User";
 }

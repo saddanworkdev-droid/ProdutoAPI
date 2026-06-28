@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using ProdutoAPI.Data;
 using ProdutoAPI.DTOs;
+using ProdutoAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -21,11 +22,40 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
+    [HttpPost("Register")]
+    public IActionResult Register(RegisterDTO dto)
+    {
+        var usuarioExiste = _context.Usuarios
+            .Any(u => u.Login == dto.Login);
+
+        if (usuarioExiste)
+        {
+            return BadRequest("Usuário já existe.");
+        }
+
+        var usuario = new Usuario
+        {
+            Login = dto.Login,
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword(dto.Senha),
+            Role = dto.Role
+        };
+
+        _context.Usuarios.Add(usuario);
+        _context.SaveChanges();
+
+        return Ok("Usuário cadastrado com sucesso.");
+    }
+
     [HttpPost("Login")]
     public IActionResult Login(LoginDTO dto)
     {
         var usuario = _context.Usuarios
-            .FirstOrDefault(u => u.Login == dto.Login && u.Senha == dto.Senha);
+    .FirstOrDefault(u => u.Login == dto.Login);
+
+        if (usuario == null || !BCrypt.Net.BCrypt.Verify(dto.Senha, usuario.SenhaHash))
+        {
+            return Unauthorized("Login ou senha inválidos.");
+        }
 
         if (usuario == null)
         {
@@ -35,7 +65,8 @@ public class AuthController : ControllerBase
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, usuario.Login),
-            new Claim("UsuarioId", usuario.Id.ToString())
+            new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
+            new Claim(ClaimTypes.Role, usuario.Role)
         };
 
         var key = new SymmetricSecurityKey(
