@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProdutoAPI.Data;
 using ProdutoAPI.DTOs;
@@ -22,6 +23,7 @@ public class AuthController : ControllerBase
         _configuration = configuration;
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("Register")]
     public IActionResult Register(RegisterDTO dto)
     {
