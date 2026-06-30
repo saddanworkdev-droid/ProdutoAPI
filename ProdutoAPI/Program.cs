@@ -15,9 +15,7 @@ builder.Services.AddScoped<IProdutoService, ProdutoService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        ServerVersion.AutoDetect(
-            builder.Configuration.GetConnectionString("DefaultConnection")
-        )
+        new MySqlServerVersion(new Version(8, 0, 46))
     )
 );
 
@@ -93,6 +91,8 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    context.Database.Migrate();
 
     DbInitializer.Seed(context);
 }
