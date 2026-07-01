@@ -6,6 +6,7 @@ using ProdutoAPI.Data;
 using ProdutoAPI.Interfaces;
 using ProdutoAPI.Services;
 using System.Text;
+using ProdutoAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -76,6 +77,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
